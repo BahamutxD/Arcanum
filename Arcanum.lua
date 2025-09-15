@@ -1,4 +1,4 @@
--------------------------------------------------------------------------------------------------------
+﻿-------------------------------------------------------------------------------------------------------
 -- Arcanum
 
 -- Addon pour Mage inspiré du célébre Necrosis
@@ -18,6 +18,7 @@
 -- FONCTIONS GENERALES EN RELATION AVEC LE FICHIER XML
 
 ------------------------------------------------------------------------------------------------------
+
 
 Default_ArcanumConfig = {
 	Version = ArcanumData.Version;
@@ -78,7 +79,7 @@ Default_ArcanumConfig = {
 	LeftClick = 1;
 	MiddleClick = 8;
 	RightClick = 3;
-	ButtonsOrder = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	ButtonsOrder = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
 	LastBuff = 4;
 	LastArmor = 2;
@@ -241,7 +242,7 @@ local ArcanumButtonDisplayTexture;
 
 local ArcanumButtonDisplayTexture = { nil, nil, nil, nil, nil, nil, nil, nil };
 local CoolDown = {
-	{ nil, true, HearthstoneLocation[1], HearthstoneLocation[2] },
+	{ nil, true, ARCANUM_SPELL_TABLE.ID[35], nil },
 	{ nil, true, ManaGemLocation[1][1], ManaGemLocation[1][2] },
 	{ nil, true, ARCANUM_SPELL_TABLE.ID[26], nil },
 	{ nil, true, ARCANUM_SPELL_TABLE.ID[32], nil },
@@ -354,15 +355,9 @@ function Arcanum_Initialize()
 		ArcanumManaGemCooldown:SetFont(GameFontHighlight:GetFont(), 12, "OUTLINE")
 		ArcanumButton4Text:SetFont(GameFontHighlight:GetFont(), 12, "OUTLINE")
 
-		if not pfUI or not pfUI.addonbuttons then
-			ArcanumMoveMinimapButton()
-		end
-
 		if ArcanumConfig.Toggle == false then
 			Arcanum_HideUI();
-			if firstLoad then
-				Arcanum_Msg(ARCANUM_MESSAGE.Interface.InitOff, "USER");
-			end
+			Arcanum_Msg(ARCANUM_MESSAGE.Interface.InitOff, "USER");
 		elseif firstLoad then
 			Arcanum_Msg(ARCANUM_MESSAGE.Interface.InitOn, "USER");
 			firstLoad = false;
@@ -391,19 +386,16 @@ function Arcanum_OnDragStop(button)
 end
 
 local tick = 1
+
 -- Fonction lance  la mise  jour de l'interface (main) -- toutes les 0,1 secondes environ
 function Arcanum_OnUpdate()
 	--Si c'est la premiere update on initialize
-	if Loaded == false  then
+	if Loaded == false then
 		Arcanum_Initialize();
 		Loaded = true;
 	end
-
-	if tick > GetTime() then
-		return
-	else
-		tick = GetTime() + .2
-	end
+	
+	if tick > GetTime() then return else tick = GetTime() + .2 end
 
 	if englishClass == "MAGE" then
 		Arcanum_DisplayFading();
@@ -587,116 +579,126 @@ end
 function Arcanum_BuildTooltip(button, anchor, type)
 	GameTooltip:SetOwner(button, anchor);
 	if (type == "Mount") then
-		GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_TRANSLATION.Mounting .. " " .. MountName[ArcanumConfig.LastMount] .. "\n" .. ARCANUM_MESSAGE.Tooltip.MiddleClick .. ARCANUM_TRANSLATION.Hearth));
+		--GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_TRANSLATION.Mounting .. " " .. MountName[ArcanumConfig.LastMount] .. "\n" .. ARCANUM_MESSAGE.Tooltip.MiddleClick .. ARCANUM_TRANSLATION.Hearth));
 		if (CoolDown[1][1] ~= nil) then
-			GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_MESSAGE.Tooltip.Cooldown .. CoolDown[1][1]));
+			--GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_MESSAGE.Tooltip.Cooldown .. CoolDown[1][1]));
 		end
 	elseif (type == "Buff") and ArcanumConfig.LastBuff ~= 0 then
-		GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_TOOLTIP_DATA.LastSpell .. "\n" .. ARCANUM_SPELL_TABLE.Name[ArcanumConfig.LastBuff] .. "\nMana : " .. ARCANUM_SPELL_TABLE.Mana[ArcanumConfig.LastBuff]));
+		--GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_TOOLTIP_DATA.LastSpell .. "\n" .. ARCANUM_SPELL_TABLE.Name[ArcanumConfig.LastBuff] .. "\nMana : " .. ARCANUM_SPELL_TABLE.Mana[ArcanumConfig.LastBuff]));
 	elseif (type == "ArcaneIntellect") then
-		GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[4], 1);
+		--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[4], 1);
 	elseif (type == "ArcaneBrilliance") then
-		GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[5], 1);
+		--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[5], 1);
 	elseif (type == "Magic") and ArcanumConfig.LastMagic ~= 0 then
-		GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_TOOLTIP_DATA.LastSpell .. "\n" .. ARCANUM_SPELL_TABLE.Name[ArcanumConfig.LastMagic] .. "\nMana : " .. ARCANUM_SPELL_TABLE.Mana[ArcanumConfig.LastMagic]));
+		--GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_TOOLTIP_DATA.LastSpell .. "\n" .. ARCANUM_SPELL_TABLE.Name[ArcanumConfig.LastMagic] .. "\nMana : " .. ARCANUM_SPELL_TABLE.Mana[ArcanumConfig.LastMagic]));
 	elseif (type == "AmplifyMagic") then
-		GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[7], 1);
+		--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[7], 1);
 	elseif (type == "DampenMagic") then
-		GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[6], 1);
+		--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[6], 1);
 	elseif (type == "Armor") and ArcanumConfig.LastArmor ~= 0 then
-		GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_TOOLTIP_DATA.LastSpell .. "\n" .. ARCANUM_SPELL_TABLE.Name[ArcanumConfig.LastArmor] .. "\nMana : " .. ARCANUM_SPELL_TABLE.Mana[ArcanumConfig.LastArmor]));
+		--GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_TOOLTIP_DATA.LastSpell .. "\n" .. ARCANUM_SPELL_TABLE.Name[ArcanumConfig.LastArmor] .. "\nMana : " .. ARCANUM_SPELL_TABLE.Mana[ArcanumConfig.LastArmor]));
 	elseif (type == "FrostArmor") then
 		if (ARCANUM_SPELL_TABLE.Mana[2] ~= nil) then
-			GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[2], 1);
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[2], 1);
 		elseif (ARCANUM_SPELL_TABLE.Mana[1] ~= nil) then
-			GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[1], 1);
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[1], 1);
 		end
 	elseif (type == "MageArmor") then
-		GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[3], 1);
+		--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[3], 1);
 	elseif (type == "Oranges") then
-		GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[35], 1);
-		GameTooltip:AddLine("Left click to use, Right click to create");
-		GameTooltip:AddLine(ArcanumArcanePowder .. " Arcane Powder Left");
+		--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[35], 1);
+		--GameTooltip:AddLine("Left click to use, Right click to create");
+		--GameTooltip:AddLine(ArcanumArcanePowder .. " Arcane Powder Left");
 	elseif (type == "Food") then
-		GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[8], 1);
-		GameTooltip:AddLine("Left click to eat, Right click to create");
+		--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[8], 1);
+		--GameTooltip:AddLine("Left click to eat, Right click to create");
 	elseif (type == "Water") then
-		GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[9], 1);
-		GameTooltip:AddLine("Left click to drink, Right click to create");
+		--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[9], 1);
+		--GameTooltip:AddLine("Left click to drink, Right click to create");
 	elseif (type == "ManaGem") then
 		if (ARCANUM_SPELL_TABLE.ID[13] ~= nil and ManaGemExists[1] == false) then
-			GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[13], 1);
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[13], 1);
 		elseif (ARCANUM_SPELL_TABLE.ID[12] ~= nil and ManaGemExists[2] == false) then
-			GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[12], 1);
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[12], 1);
 		elseif (ARCANUM_SPELL_TABLE.ID[11] ~= nil and ManaGemExists[3] == false) then
-			GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[11], 1);
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[11], 1);
 		elseif (ARCANUM_SPELL_TABLE.ID[10] ~= nil and ManaGemExists[4] == false) then
-			GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[10], 1);
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[10], 1);
 		end
-		GameTooltip:AddLine("Left click to use, Right click to create");
+		--GameTooltip:AddLine("Left click to use, Right click to create");
 	elseif (type == "Portal") and ArcanumConfig.LastPortal ~= 0 then
-		GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_TOOLTIP_DATA.LastSpell .. "\n" .. ARCANUM_SPELL_TABLE.Name[ArcanumConfig.LastPortal] .. "\nMana : " .. ARCANUM_SPELL_TABLE.Mana[ArcanumConfig.LastPortal]));
+		--GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_TOOLTIP_DATA.LastSpell .. "\n" .. ARCANUM_SPELL_TABLE.Name[ArcanumConfig.LastPortal] .. "\nMana : " .. ARCANUM_SPELL_TABLE.Mana[ArcanumConfig.LastPortal]));
 	elseif (type == "Teleport1") then
 		if (ARCANUM_SPELL_TABLE.ID[41] ~= nil) then
-			GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[41], 1);
-			GameTooltip:AddLine(ArcanumRuneOfTeleportation .. " Runes Left");
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[41], 1);
+			--GameTooltip:AddLine(ArcanumRuneOfTeleportation .. " Runes Left");
 		end
 	elseif (type == "Teleport2") then
 		if (ARCANUM_SPELL_TABLE.ID[42] ~= nil) then
-			GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[42], 1);
-			GameTooltip:AddLine(ArcanumRuneOfTeleportation .. " Runes Left");
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[42], 1);
+			--GameTooltip:AddLine(ArcanumRuneOfTeleportation .. " Runes Left");
 		end
 	elseif (type == "Teleport3") then
 		if (ARCANUM_SPELL_TABLE.ID[43] ~= nil) then
-			GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[43], 1);
-			GameTooltip:AddLine(ArcanumRuneOfTeleportation .. " Runes Left");
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[43], 1);
+			--GameTooltip:AddLine(ArcanumRuneOfTeleportation .. " Runes Left");
 		end
 	elseif (type == "Teleport4") then
 		if (ARCANUM_SPELL_TABLE.ID[44] ~= nil) then
-			GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[44], 1);
-			GameTooltip:AddLine(ArcanumRuneOfTeleportation .. " Runes Left");
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[44], 1);
+			--GameTooltip:AddLine(ArcanumRuneOfTeleportation .. " Runes Left");
+		end
+	elseif (type == "Teleport5") then
+		if (ARCANUM_SPELL_TABLE.ID[45] ~= nil) then
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[45], 1);
+			--GameTooltip:AddLine(ArcanumRuneOfTeleportation .. " Runes Left");
 		end
 	elseif (type == "Portal1") then
 		if (ARCANUM_SPELL_TABLE.ID[51] ~= nil) then
-			GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[51], 1);
-			GameTooltip:AddLine(ArcanumRuneOfPortals .. " Runes Left");
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[51], 1);
+			--GameTooltip:AddLine(ArcanumRuneOfPortals .. " Runes Left");
 		end
 	elseif (type == "Portal2") then
 		if (ARCANUM_SPELL_TABLE.ID[52] ~= nil) then
-			GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[52], 1);
-			GameTooltip:AddLine(ArcanumRuneOfPortals .. " Runes Left");
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[52], 1);
+			--GameTooltip:AddLine(ArcanumRuneOfPortals .. " Runes Left");
 		end
 	elseif (type == "Portal3") then
 		if (ARCANUM_SPELL_TABLE.ID[53] ~= nil) then
-			GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[53], 1);
-			GameTooltip:AddLine(ArcanumRuneOfPortals .. " Runes Left");
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[53], 1);
+			--GameTooltip:AddLine(ArcanumRuneOfPortals .. " Runes Left");
 		end
 	elseif (type == "Portal4") then
 		if (ARCANUM_SPELL_TABLE.ID[54] ~= nil) then
-			GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[54], 1);
-			GameTooltip:AddLine(ArcanumRuneOfPortals .. " Runes Left");
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[54], 1);
+			--GameTooltip:AddLine(ArcanumRuneOfPortals .. " Runes Left");
+		end
+	elseif (type == "Portal5") then
+		if (ARCANUM_SPELL_TABLE.ID[55] ~= nil) then
+			--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[55], 1);
+			--GameTooltip:AddLine(ArcanumRuneOfPortals .. " Runes Left");
 		end
 		-- Soit c'est le bouton principal
 	elseif (type == "Main") then
-		GameTooltip:AddLine(Arcanum_MsgAddColor("<white>" .. ArcanumArcanePowder) .. " " .. Arcanum_ColoredMsg(ARCANUM_ITEM.ArcanePowder));
-		GameTooltip:AddLine(Arcanum_MsgAddColor("<white>" .. ArcanumRuneOfTeleportation) .. " " .. Arcanum_ColoredMsg(ARCANUM_ITEM.RuneOfTeleportation));
-		GameTooltip:AddLine(Arcanum_MsgAddColor("<white>" .. ArcanumRuneOfPortals) .. " " .. Arcanum_ColoredMsg(ARCANUM_ITEM.RuneOfPortals));
-		GameTooltip:AddLine(Arcanum_MsgAddColor("<white>" .. ArcanumLightFeathers) .. " " .. Arcanum_ColoredMsg(ARCANUM_ITEM.LightFeathers));
-		GameTooltip:AddLine(" ");
-		GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_MESSAGE.Tooltip.LeftClick .. ARCANUM_CLICK[ArcanumConfig.LeftClick]));
-		GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_MESSAGE.Tooltip.MiddleClick .. ARCANUM_CLICK[ArcanumConfig.MiddleClick]));
-		GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_MESSAGE.Tooltip.RightClick .. ARCANUM_CLICK[ArcanumConfig.RightClick]));
+		--GameTooltip:AddLine(Arcanum_MsgAddColor("<white>" .. ArcanumArcanePowder) .. " " .. Arcanum_ColoredMsg(ARCANUM_ITEM.ArcanePowder));
+		--GameTooltip:AddLine(Arcanum_MsgAddColor("<white>" .. ArcanumRuneOfTeleportation) .. " " .. Arcanum_ColoredMsg(ARCANUM_ITEM.RuneOfTeleportation));
+		--GameTooltip:AddLine(Arcanum_MsgAddColor("<white>" .. ArcanumRuneOfPortals) .. " " .. Arcanum_ColoredMsg(ARCANUM_ITEM.RuneOfPortals));
+		--GameTooltip:AddLine(Arcanum_MsgAddColor("<white>" .. ArcanumLightFeathers) .. " " .. Arcanum_ColoredMsg(ARCANUM_ITEM.LightFeathers));
+		--GameTooltip:AddLine(" ");
+		--GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_MESSAGE.Tooltip.LeftClick .. ARCANUM_CLICK[ArcanumConfig.LeftClick]));
+		--GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_MESSAGE.Tooltip.MiddleClick .. ARCANUM_CLICK[ArcanumConfig.MiddleClick]));
+		--GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_MESSAGE.Tooltip.RightClick .. ARCANUM_CLICK[ArcanumConfig.RightClick]));
 	elseif (type == "Minimap") then
-		GameTooltip:AddLine("|CFF0050FFAr|CFF0080FFca|CFF00B0FFnum|CFFFFFFFF: " .. "\n" .. ARCANUM_MESSAGE.Tooltip.Minimap);
+		--GameTooltip:AddLine("|CFF0050FFAr|CFF0080FFca|CFF00B0FFnum|CFFFFFFFF: " .. "\n" .. ARCANUM_MESSAGE.Tooltip.Minimap);
 	elseif (type == "SpellTimer") then
 		Arcanum_MoneyToggle();
 		ArcanumTooltip:SetBagItem(HearthstoneLocation[1], HearthstoneLocation[2]);
 		local itemName = tostring(ArcanumTooltipTextLeft5:GetText());
-		GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_TOOLTIP_DATA[type].Text));
+		--GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_TOOLTIP_DATA[type].Text));
 		if string.find(itemName, ARCANUM_TRANSLATION.Cooldown) then
-			GameTooltip:AddLine(Arcanum_MsgAddColor(ARCANUM_TRANSLATION.Hearth .. " - " .. itemName));
+			--GameTooltip:AddLine(Arcanum_MsgAddColor(ARCANUM_TRANSLATION.Hearth .. " - " .. itemName));
 		else
-			GameTooltip:AddLine(Arcanum_MsgAddColor(ARCANUM_TOOLTIP_DATA[type].Right .. GetBindLocation()));
+			--GameTooltip:AddLine(Arcanum_MsgAddColor(ARCANUM_TOOLTIP_DATA[type].Right .. GetBindLocation()));
 		end
 	end
 	-- On affiche
@@ -715,6 +717,7 @@ function Arcanum_CallToolTip(Id)
 		{ "Portal", "Teleport2", "Portal2" },
 		{ "Portal", "Teleport3", "Portal3" },
 		{ "Portal", "Teleport4", "Portal4" },
+		{ "Portal", "Teleport5", "Portal5" },
 	};
 	if ArcanumConfig.BuffType == 0 then
 		Arcanum_BuildTooltip(this, "ANCHOR_CURSOR", ToolTipList[Id][2]);
@@ -824,6 +827,9 @@ function Arcanum_LoadConfig()
 	if (ArcanumConfig.ManaGemButton) then
 		ArcanumManaGemButton_Button:SetChecked(1);
 	end
+	if (ArcanumConfig.MinimapIcon) then
+		ArcanumMinimapIcon_Button:SetChecked(1);
+	end
 
 	ArcanumEvocationLimit_Slider:SetValue(ArcanumConfig.EvocationLimit);
 	ArcanumEvocationLimit_SliderLow:SetText("0 %");
@@ -849,6 +855,10 @@ function Arcanum_LoadConfig()
 	ArcanumButtonScale_SliderLow:SetText("50 %");
 	ArcanumButtonScale_SliderHigh:SetText("150 %");
 	ArcanumButton:SetScale(ArcanumConfig.ArcanumButtonScale / 100);
+
+	ArcanumMinimapRotate_Slider:SetValue(ArcanumConfig.MinimapIconPos);
+	ArcanumMinimapRotate_SliderLow:SetText("0");
+	ArcanumMinimapRotate_SliderHigh:SetText("360");
 
 	if ArcanumConfig.NoDragAll then
 		Arcanum_NoDrag();
@@ -913,11 +923,12 @@ function Arcanum_LanguageInitialize()
 	ArcanumPortalButton_Option:SetText(ARCANUM_CONFIGURATION.PortalButton);
 	ArcanumFoodButton_Option:SetText(ARCANUM_CONFIGURATION.FoodButton);
 	ArcanumWaterButton_Option:SetText(ARCANUM_CONFIGURATION.WaterButton);
+	ArcanumMinimapIcon_Option:SetText(ARCANUM_CONFIGURATION.MinimapIcon);
 	ArcanumManaGemButton_Option:SetText(ARCANUM_CONFIGURATION.ManaGemButton);
 	ArcanumLeftClick:SetText(Arcanum_ColoredMsg(ARCANUM_MESSAGE.Tooltip.LeftClick));
 	ArcanumMiddleClick:SetText(Arcanum_ColoredMsg(ARCANUM_MESSAGE.Tooltip.MiddleClick));
 	ArcanumRightClick:SetText(Arcanum_ColoredMsg(ARCANUM_MESSAGE.Tooltip.RightClick));
-
+	ArcanumMinimapRotate_SliderText:SetText(Arcanum_ColoredMsg(ARCANUM_CONFIGURATION.ArcanumMinimapIconPos .. " " .. ArcanumConfig.MinimapIconPos .. "°"));
 	ClearTable(ArcanumLeftButtonClick);
 	for i = 1, table.getn(ARCANUM_CLICK) do
 		table.insert(ArcanumLeftButtonClick, ARCANUM_CLICK[i]);
@@ -1022,10 +1033,10 @@ function Arcanum_AutoBuy()
 	if ARCANUM_SPELL_TABLE.ID[5] == nil then
 		ReagentCount[1] = 0;
 	end
-	if (ARCANUM_SPELL_TABLE.ID[41] == nil and ARCANUM_SPELL_TABLE.ID[42] == nil and ARCANUM_SPELL_TABLE.ID[43] == nil and ARCANUM_SPELL_TABLE.ID[44] == nil) then
+	if (ARCANUM_SPELL_TABLE.ID[41] == nil and ARCANUM_SPELL_TABLE.ID[42] == nil and ARCANUM_SPELL_TABLE.ID[43] == nil and ARCANUM_SPELL_TABLE.ID[44] == nil and ARCANUM_SPELL_TABLE.ID[45] == nil) then
 		ReagentCount[2] = 0;
 	end
-	if (ARCANUM_SPELL_TABLE.ID[51] == nil and ARCANUM_SPELL_TABLE.ID[52] == nil and ARCANUM_SPELL_TABLE.ID[53] == nil and ARCANUM_SPELL_TABLE.ID[54] == nil) then
+	if (ARCANUM_SPELL_TABLE.ID[51] == nil and ARCANUM_SPELL_TABLE.ID[52] == nil and ARCANUM_SPELL_TABLE.ID[53] == nil and ARCANUM_SPELL_TABLE.ID[54] == nil and ARCANUM_SPELL_TABLE.ID[55] == nil) then
 		ReagentCount[3] = 0;
 	end
 	if ReagentCount[1] ~= 0 or ReagentCount[2] ~= 0 or ReagentCount[3] ~= 0 then
@@ -1397,16 +1408,8 @@ function Arcanum_UseItem(type, button)
 	if MerchantOpened == false then
 		-- Fonction pour utiliser une pierre de foyer dans l'inventaire
 		if (type == "Hearthstone") then
-			-- Trouve les items utilisés par Arcanum
-			if (HearthstoneLocation[1] ~= nil) then
-				-- on l'utilise
-				UseContainerItem(HearthstoneLocation[1], HearthstoneLocation[2]);
-				-- soit il n'y en a pas dans l'inventaire, on affiche un message d'erreur
-			else
-				Arcanum_Msg(ARCANUM_MESSAGE.Error.NoHearthstone, "USER");
-			end
-		end
-
+				CastSpell(ARCANUM_SPELL_TABLE.ID[35], "spell");
+				end
 		if (type == "Evocation") then
 			if ARCANUM_SPELL_TABLE.ID[26] ~= nil then
 				if (math.ceil(UnitMana("player") / UnitManaMax("player") * 100)) <= ArcanumConfig.EvocationLimit then
@@ -1512,6 +1515,34 @@ function Arcanum_UseItem(type, button)
 			elseif (ManaGemExists[4] == true) then
 				UseContainerItem(ManaGemLocation[4][1], ManaGemLocation[4][2]);
 				ManaGemCount = ManaGemCount - 1;
+			end
+		end
+		-- Arcane Intellect / Arcane Brilliance
+		if type == "ArcaneIntellect" or type == "ArcaneBrilliance" then
+			if button == "LeftButton" and ARCANUM_SPELL_TABLE.ID[4] then
+				CastSpell(ARCANUM_SPELL_TABLE.ID[4], "spell"); -- Arcane Intellect
+			elseif button == "RightButton" and ARCANUM_SPELL_TABLE.ID[5] then
+				CastSpell(ARCANUM_SPELL_TABLE.ID[5], "spell"); -- Arcane Brilliance
+			end
+		end
+
+		-- Ice Armor / Mage Armor
+		if type == "FrostArmor" or type == "MageArmor" then
+			if button == "LeftButton" and ARCANUM_SPELL_TABLE.ID[2] then
+				CastSpell(ARCANUM_SPELL_TABLE.ID[2], "spell"); -- Ice/Frost Armor
+			elseif button == "RightButton" and ARCANUM_SPELL_TABLE.ID[3] then
+				CastSpell(ARCANUM_SPELL_TABLE.ID[3], "spell"); -- Mage Armor
+			end
+		end
+
+		-- Teleport / Portal (covers all cities 1–5)
+		for i = 1, 5 do
+			if type == "Teleport"..i or type == "Portal"..i then
+				if button == "LeftButton" and ARCANUM_SPELL_TABLE.ID[40+i] then
+					CastSpell(ARCANUM_SPELL_TABLE.ID[40+i], "spell"); -- Teleport city
+				elseif button == "RightButton" and ARCANUM_SPELL_TABLE.ID[50+i] then
+					CastSpell(ARCANUM_SPELL_TABLE.ID[50+i], "spell"); -- Portal city
+				end
 			end
 		end
 	end
@@ -1656,17 +1687,38 @@ end
 
 ------------------------------------------------------------------------------------------------------
 
-function ArcanumMoveMinimapButton()
+function Arcanum_MinimapMoveButton()
 	ArcanumMinimapButton:SetPoint("TOPLEFT", "Minimap", "TOPLEFT", 52 - (80 * cos(ArcanumConfig.MinimapIconPos)), (80 * sin(ArcanumConfig.MinimapIconPos)) - 52);
 end
 
-function ArcanumMinimapMoved()
+function ArcanumIconDragging()
 	local xpos, ypos = GetCursorPosition()
-	local xmin, ymin = Minimap:GetLeft() or 400, Minimap:GetBottom() or 400
+	local xmin, ymin = Minimap:GetLeft(), Minimap:GetBottom()
+
 	xpos = xmin - xpos / Minimap:GetEffectiveScale() + 70
 	ypos = ypos / Minimap:GetEffectiveScale() - ymin - 70
 
-	ArcanumConfig.MinimapIconPos = math.deg(math.atan2(ypos, xpos))
+	ArcanumConfig.IconPos = math.deg(math.atan2(ypos, xpos))
+
+	move_button();
+end
+
+function move_button()
+	local xpos, ypos
+	local angle = ArcanumConfig.IconPos or 0
+
+	if ItemRack_Settings.SquareMinimap == "ON" then
+		-- brute force method until trig solution figured out - min/max a point on a circle beyond square
+		xpos = 110 * cos(angle)
+		ypos = 110 * sin(angle)
+		xpos = math.max(-82, math.min(xpos, 84))
+		ypos = math.max(-86, math.min(ypos, 82))
+	else
+		xpos = 80 * cos(angle)
+		ypos = 80 * sin(angle)
+	end
+
+	ArcanumMinimapButton:SetPoint("TOPLEFT", "Minimap", "TOPLEFT", 52 - xpos, ypos - 52)
 end
 
 ------------------------------------------------------------------------------------------------------
@@ -1677,6 +1729,11 @@ end
 
 function Arcanum_ButtonSetup()
 	if ArcanumConfig.Toggle == true then
+		if ArcanumConfig.MinimapIcon == true then
+			ShowUIPanel(ArcanumMinimapButton);
+		else
+			HideUIPanel(ArcanumMinimapButton);
+		end
 		Arcanum_Arcanum2ButtonSetup();
 	end
 end
@@ -1755,6 +1812,13 @@ function Arcanum_Arcanum2ButtonSetup()
 				HideUIPanel(ArcanumButton10);
 				HideUIPanel(OrderButton10);
 			end
+			if (ARCANUM_SPELL_TABLE.ID[45] ~= nil) then
+				ShowUIPanel(ArcanumButton11);
+				ShowUIPanel(OrderButton11);
+			else
+				HideUIPanel(ArcanumButton11);
+				HideUIPanel(OrderButton11);
+			end
 		end
 	else
 		if (ARCANUM_SPELL_TABLE.ID[3] ~= nil and ArcanumConfig.ArmorButton == true) then
@@ -1807,12 +1871,20 @@ function Arcanum_Arcanum2ButtonSetup()
 				HideUIPanel(ArcanumButton10);
 				HideUIPanel(OrderButton10);
 			end
+			if (ARCANUM_SPELL_TABLE.ID[55] ~= nil) then
+				ShowUIPanel(ArcanumButton11);
+				ShowUIPanel(OrderButton11);
+			else
+				HideUIPanel(ArcanumButton11);
+				HideUIPanel(OrderButton11);
+			end
 		end
 	end
 end
 
 function Arcanum_HideUI()
 	isHidden = true;
+	HideUIPanel(ArcanumMinimapButton);
 	HideUIPanel(ArcanumButton);
 	HideUIPanel(ArcanumButton1);
 	HideUIPanel(ArcanumButton2);
@@ -1838,6 +1910,7 @@ function Arcanum_InitButtons()
 	ArcanumButton8:SetPoint("CENTER", "ArcanumButton", "CENTER", -45, 15);
 	ArcanumButton9:SetPoint("CENTER", "ArcanumButton", "CENTER", -45, -15);
 	ArcanumButton10:SetPoint("CENTER", "ArcanumButton", "CENTER", -28, -39);
+	ArcanumButton11:SetPoint("CENTER", "ArcanumButton", "CENTER", 100, 100);
 end
 
 ------------------------------------------------------------------------------------------------------
@@ -2086,6 +2159,7 @@ function Arcanum_ClearAllPoints()
 	ArcanumButton8:ClearAllPoints();
 	ArcanumButton9:ClearAllPoints();
 	ArcanumButton10:ClearAllPoints();
+	ArcanumButton11:ClearAllPoints();
 end
 
 -- Fonction (XML) pour étendre la propriété NoDrag() du bouton principal d'Arcanum sur tous ses boutons
@@ -2100,6 +2174,7 @@ function Arcanum_NoDrag()
 	ArcanumButton8:RegisterForDrag("");
 	ArcanumButton9:RegisterForDrag("");
 	ArcanumButton10:RegisterForDrag("");
+	ArcanumButton11:RegisterForDrag("");
 end
 
 -- Fonction (XML) inverse de celle du dessus
@@ -2114,6 +2189,7 @@ function Arcanum_Drag()
 	ArcanumButton8:RegisterForDrag("LeftButton");
 	ArcanumButton9:RegisterForDrag("LeftButton");
 	ArcanumButton10:RegisterForDrag("LeftButton");
+	ArcanumButton11:RegisterForDrag("LeftButton");
 end
 
 function Arcanum_MovableIcons()
@@ -2127,6 +2203,7 @@ function Arcanum_MovableIcons()
 	ArcanumButton8:SetPoint("CENTER", "UIParent", "CENTER", 89, -100);
 	ArcanumButton9:SetPoint("CENTER", "UIParent", "CENTER", 125, -100);
 	ArcanumButton10:SetPoint("CENTER", "UIParent", "CENTER", 161, -100);
+	ArcanumButton11:SetPoint("CENTER", "UIParent", "CENTER", -161, -100);
 end
 
 function Arcanum_UpdateButtonsScale()
@@ -2174,6 +2251,7 @@ function Arcanum_UpdateButtonsScale()
 		ArcanumButton8:SetScale(ArcanumConfig.ArcanumButtonScale / 100);
 		ArcanumButton9:SetScale(ArcanumConfig.ArcanumButtonScale / 100);
 		ArcanumButton10:SetScale(ArcanumConfig.ArcanumButtonScale / 100);
+		ArcanumButton11:SetScale(ArcanumConfig.ArcanumButtonScale / 100);
 	end
 end
 

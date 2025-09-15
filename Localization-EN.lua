@@ -38,10 +38,12 @@ function Arcanum_Localization_Dialog_En()
 	BINDING_NAME_TELEPORT2 = "Teleport 2";
 	BINDING_NAME_TELEPORT3 = "Teleport 3";
 	BINDING_NAME_TELEPORT4 = "Teleport 4";
+	BINDING_NAME_TELEPORT5 = "Teleport 5";
 	BINDING_NAME_PORTAL1 = "Portal 1";
 	BINDING_NAME_PORTAL2 = "Portal 2";
 	BINDING_NAME_PORTAL3 = "Portal 3";
 	BINDING_NAME_PORTAL4 = "Portal 4";
+	BINDING_NAME_PORTAL5 = "Portal 5";
 
 	ARCANUM_CONFIGURATION = {
 		["Menu1"] = "Messages",
@@ -107,6 +109,8 @@ function Arcanum_Localization_Dialog_En()
 		["FoodButton"] = "food",
 		["WaterButton"] = "water",
 		["ManaGemButton"] = "mana gem",
+		["MinimapIcon"] = "Show minimap icon",
+		["ArcanumMinimapIconPos"] = "Minimap icon position:",
 	};
 
 	ARCANUM_CLICK = {
@@ -192,8 +196,8 @@ if (GetLocale() == "enUS") or (GetLocale() == "enGB") then
 		["Mage Armor"] = 3,
 		["Arcane Intellect"] = 4,
 		["Arcane Brilliance"] = 5,
-		["Dampen Magic"] = 6,
-		["Amplify Magic"] = 7,
+		--["Dampen Magic"] = 6,
+		--["Amplify Magic"] = 7,
 		["Conjure Food"] = 8,
 		["Conjure Water"] = 9,
 		["Conjure Mana Agate"] = 10,
@@ -215,21 +219,25 @@ if (GetLocale() == "enUS") or (GetLocale() == "enGB") then
 		["Teleport: Ironforge"] = 42,
 		["Teleport: Stormwind"] = 43,
 		["Teleport: Theramore"] = 44,
+		["Teleport: Alah'Thalas"] = 6,
 
 		["Teleport: Orgrimmar"] = 41,
 		["Teleport: Thunder Bluff"] = 42,
 		["Teleport: Undercity"] = 43,
 		["Teleport: Stonard"] = 44,
+		["Teleport: Zul'Aman"] = 6,
 
 		["Portal: Darnassus"] = 51,
 		["Portal: Ironforge"] = 52,
 		["Portal: Stormwind"] = 53,
 		["Portal: Theramore"] = 54,
+		["Portal: Alah'Thalas"] = 7,
 
 		["Portal: Orgrimmar"] = 51,
 		["Portal: Thunder Bluff"] = 52,
 		["Portal: Undercity"] = 53,
 		["Portal: Stonard"] = 54,
+		["Portal: Zul'Aman"] = 7,
 	}
 	-- Table des sorts du mage
 	ARCANUM_SPELL_TABLE = {
@@ -260,9 +268,9 @@ if (GetLocale() == "enUS") or (GetLocale() == "enGB") then
 		["QuirajiMount"] = "Quiraji Resonating Crystal",
 	};
 
-	ALLIANCE_DEST = { "Darnassus", "Ironforge", "Stormwind", "Theramore" };
+	ALLIANCE_DEST = { "Darnassus", "Ironforge", "Stormwind", "Theramore", "Alah'Thalas" };
 
-	HORDE_DEST = { "Orgrimmar", "Thunder Bluff", "Undercity", "Stonard" };
+	HORDE_DEST = { "Orgrimmar", "Thunder Bluff", "Undercity", "Stonard", "Zul'Aman" };
 
 	-- Monture	
 	MOUNT = { { "Horn of the Black War Wolf", "Horn of the Brown Wolf", "Horn of the Red Wolf", "Horn of the Swift Brown Wolf", "Horn of the Timber Wolf" },

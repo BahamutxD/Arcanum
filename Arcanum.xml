@@ -63,7 +63,7 @@
         </Anchors>
     </Texture>
 
-    <Button name="ArcanumMinimapButton" parent="Minimap" enableMouse="true" movable="true" draggable="true">
+    <Button name="ArcanumMinimapButton" parent="Minimap" movable="true">
         <Size>
             <AbsDimension x="34" y="34"/>
         </Size>
@@ -125,13 +125,6 @@
                 return;
                 end
             </OnClick>
-            <OnDragStart>
-                this:StartMoving();
-            </OnDragStart>
-            <OnDragStop>
-                this:StopMovingOrSizing();
-                ArcanumMinimapMoved();
-            </OnDragStop>
         </Scripts>
     </Button>
 
@@ -485,9 +478,9 @@
         <Scripts>
             <OnEnter>
                 if ArcanumConfig.BuffType == 0 then
-                Arcanum_BuildTooltip(this,"ANCHOR_CURSOR","Food");
+                    Arcanum_BuildTooltip(this,"ANCHOR_CURSOR","Food");
                 else
-                Arcanum_BuildTooltip(this,"ANCHOR_CURSOR","Oranges");
+                    Arcanum_BuildTooltip(this,"ANCHOR_CURSOR","Oranges");
                 end
                 Arcanum_ButtonMouseOver(1);
             </OnEnter>
@@ -674,10 +667,14 @@
                 Arcanum_ButtonMouseOver(4);
             </OnEnter>
             <OnClick>
+                if arg1 == "RightButton" then
+                Arcanum_BuffCast(5);
+                else
                 if ArcanumConfig.BuffType == 0 then
                 Arcanum_BuffCast(4);
                 else
                 Arcanum_BuffCast(5);
+                end
                 end
             </OnClick>
             <OnLeave>
@@ -726,10 +723,14 @@
                 Arcanum_ButtonMouseOver(5);
             </OnEnter>
             <OnClick>
+                if arg1 == "RightButton" then
+                Arcanum_ArmorCast(3);
+                else
                 if ArcanumConfig.BuffType == 0 then
                 Arcanum_ArmorCast(2);
                 else
                 Arcanum_ArmorCast(3);
+                end
                 end
             </OnClick>
             <OnLeave>
@@ -846,10 +847,14 @@
                 Arcanum_ButtonMouseOver(7);
             </OnEnter>
             <OnClick>
+                if arg1 == "RightButton" then
+                Arcanum_PortalCast(51);
+                else
                 if ArcanumConfig.BuffType == 0 then
                 Arcanum_PortalCast(41);
                 else
                 Arcanum_PortalCast(51);
+                end
                 end
             </OnClick>
             <OnLeave>
@@ -910,10 +915,14 @@
                 Arcanum_ButtonMouseOver(8);
             </OnEnter>
             <OnClick>
+                if arg1 == "RightButton" then
+                Arcanum_PortalCast(52);
+                else
                 if ArcanumConfig.BuffType == 0 then
                 Arcanum_PortalCast(42);
                 else
                 Arcanum_PortalCast(52);
+                end
                 end
             </OnClick>
             <OnLeave>
@@ -975,10 +984,14 @@
                 Arcanum_ButtonMouseOver(9);
             </OnEnter>
             <OnClick>
+                if arg1 == "RightButton" then
+                Arcanum_PortalCast(53);
+                else
                 if ArcanumConfig.BuffType == 0 then
                 Arcanum_PortalCast(43);
                 else
                 Arcanum_PortalCast(53);
+                end
                 end
             </OnClick>
             <OnLeave>
@@ -1040,14 +1053,87 @@
                 Arcanum_ButtonMouseOver(10);
             </OnEnter>
             <OnClick>
+                if arg1 == "RightButton" then
+                Arcanum_PortalCast(54);
+                else
                 if ArcanumConfig.BuffType == 0 then
                 Arcanum_PortalCast(44);
                 else
                 Arcanum_PortalCast(54);
                 end
+                end
             </OnClick>
             <OnLeave>
                 Arcanum_ButtonNormal(10);
+                GameTooltip:Hide();
+            </OnLeave>
+        </Scripts>
+    </Button>
+	
+    <Button name="ArcanumButton11" inherits="ArcanumButtonTemplate">
+        <Size>
+            <AbsDimension x="34" y="34"/>
+        </Size>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture name="ArcanumButton10Texture">
+                    <Size>
+                        <AbsDimension x="22" y="22"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="CENTER" relativeTo="ArcanumButton11" relativeFrom="CENTER">
+                            <Offset>
+                                <AbsDimension x="0" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY">
+                <Texture name="ArcanumButton11Texture2">
+                    <Size>
+                        <AbsDimension x="34" y="34"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="CENTER" relativeTo="ArcanumButton11" relativeFrom="CENTER">
+                            <Offset>
+                                <AbsDimension x="0" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY">
+                <FontString name="ArcanumButton11Text" inherits="GameFontHighlight">
+                    <Color r="1.0" g="1.0" b="1.0" a="1"/>
+                    <Anchors>
+                        <Anchor point="CENTER" relativeTo="ArcanumButton11" relativeFrom="CENTER">
+                            <Offset>
+                                <AbsDimension x="0" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnEnter>
+                Arcanum_CallToolTip(11);
+                Arcanum_ButtonMouseOver(11);
+            </OnEnter>
+            <OnClick>
+                if arg1 == "RightButton" then
+                Arcanum_PortalCast(55);
+                else
+                if ArcanumConfig.BuffType == 0 then
+                Arcanum_PortalCast(45);
+                else
+                Arcanum_PortalCast(55);
+                end
+                end
+            </OnClick>
+            <OnLeave>
+                Arcanum_ButtonNormal(11);
                 GameTooltip:Hide();
             </OnLeave>
         </Scripts>
