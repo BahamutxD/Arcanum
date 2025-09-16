@@ -2487,11 +2487,15 @@ function Arcanum_Click(button)
 		end
 		GameTooltip:Hide();
 	elseif (button == 2) then
-		if (UnitHealth("Player") < UnitHealthMax("Player")) then
+		if (OrangeCount and OrangeCount > 0) then
 			Arcanum_UseItem("Food", "LeftButton");
-		end
-		if (UnitMana("Player") < UnitManaMax("Player")) then
-			Arcanum_UseItem("Water", "LeftButton");
+		else
+			if UnitHealth("player") < UnitHealthMax("player") then
+				Arcanum_UseItem("Food", "LeftButton");
+			end
+			if UnitMana("player") < UnitManaMax("player") then
+				Arcanum_UseItem("Water", "LeftButton");
+			end
 		end
 	elseif (button == 3) then
 		Arcanum_UseItem("Hearthstone");

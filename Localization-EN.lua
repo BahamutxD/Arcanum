@@ -57,7 +57,7 @@ function Arcanum_Localization_Dialog_En()
 		["PortalMessage"] = "Show messages when summoning a portal",
 		["ArcanumButtonDisplay"] = "Display inside the sphere :",
 		["InsideDisplay"] = "Display inside the sphere:",
-		["DisplayHearthStone"] = "HearthStone",
+		["DisplayHearthStone"] = "Ritual of Refreshment",
 		["DisplayManaGem"] = "ManaGem",
 		["DisplayEvocation"] = "Evocation",
 		["DisplayIceBlock"] = "IceBlock",
@@ -116,7 +116,7 @@ function Arcanum_Localization_Dialog_En()
 	ARCANUM_CLICK = {
 		[1] = "Configuration panel";
 		[2] = "Eating & Drinking";
-		[3] = "Hearthstone";
+		[3] = "Ritual of Refreshment";
 		[4] = "Evocation";
 		[5] = "Mana gems";
 		[6] = "Ice block";
