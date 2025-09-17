@@ -18,11 +18,11 @@
     		Arcanum_BuffCast(5);
     	</Binding>
 		<Binding name="AMPLIFYMAGIC" header="ARCANUM_BIND">
-    		Arcanum_BuffCast(6);
-    	</Binding>
+			Arcanum_MagicCast(6);
+		</Binding>
 		<Binding name="DAMPENMAGIC" header="ARCANUM_BIND">
-    		Arcanum_BuffCast(7);
-    	</Binding>
+			Arcanum_MagicCast(7);
+		</Binding>
 		   <Binding name="CONJUREFOOD" header="ARCANUM_BIND">
     		Arcanum_UseItem("Food","RightButton");
     	</Binding>

@@ -592,9 +592,9 @@ function Arcanum_BuildTooltip(button, anchor, type)
 	elseif (type == "Magic") and ArcanumConfig.LastMagic ~= 0 then
 		--GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_TOOLTIP_DATA.LastSpell .. "\n" .. ARCANUM_SPELL_TABLE.Name[ArcanumConfig.LastMagic] .. "\nMana : " .. ARCANUM_SPELL_TABLE.Mana[ArcanumConfig.LastMagic]));
 	elseif (type == "AmplifyMagic") then
-		--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[7], 1);
-	elseif (type == "DampenMagic") then
 		--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[6], 1);
+	elseif (type == "DampenMagic") then
+		--GameTooltip:SetSpell(ARCANUM_SPELL_TABLE.ID[7], 1);
 	elseif (type == "Armor") and ArcanumConfig.LastArmor ~= 0 then
 		--GameTooltip:AddLine(Arcanum_ColoredMsg(ARCANUM_TOOLTIP_DATA.LastSpell .. "\n" .. ARCANUM_SPELL_TABLE.Name[ArcanumConfig.LastArmor] .. "\nMana : " .. ARCANUM_SPELL_TABLE.Mana[ArcanumConfig.LastArmor]));
 	elseif (type == "FrostArmor") then
@@ -2302,7 +2302,6 @@ function Arcanum_BuffCast(type)
 	else
 		CastSpell(ARCANUM_SPELL_TABLE.ID[type], "spell");
 	end
-
 	ArcanumConfig.LastBuff = type;
 
 	if TargetEnemy then
@@ -2330,40 +2329,33 @@ end
 
 -- Gestion des casts du menu des buffs
 function Arcanum_MagicCast(type)
-	local TargetEnemy = false;
-	if (not (UnitIsFriend("player", "target"))) and type ~= 9 then
-		TargetUnit("player");
-		TargetEnemy = true;
-	end
-	if ArcanumConfig.LevelBuff == true then
-		if (UnitExists("target")) then
-			for i = ARCANUM_SPELL_TABLE.Rank[type], 1, -1 do
-				if type == 7 then
-					if UnitLevel("target") >= Amplify_Minlvl[i] then
-						local BuffName = ARCANUM_SPELL_TABLE.Name[7] .. "(" .. ARCANUM_TRANSLATION.Rank .. " " .. i .. ")";
-						CastSpellByName(BuffName);
-						break ;
-					end
-				elseif type == 6 then
-					if UnitLevel("target") >= Dampen_Minlvl[i] then
-						local BuffName = ARCANUM_SPELL_TABLE.Name[6] .. "(" .. ARCANUM_TRANSLATION.Rank .. " " .. i .. ")";
-						CastSpellByName(BuffName);
-						break ;
-					end
-				end
-			end
-		end
-	else
-		CastSpell(ARCANUM_SPELL_TABLE.ID[type], "spell");
-	end
+    local TargetEnemy = false;
+    if (not (UnitIsFriend("player", "target"))) and type ~= 9 then
+        TargetUnit("player");
+        TargetEnemy = true;
+    end
 
-	ArcanumConfig.LastMagic = type;
-	if TargetEnemy then
-		TargetLastTarget();
-	end
-	AlphaMagicMenu = 1;
-	AlphaMagicVar = GetTime() + 3;
+    -- Toggle Amplify/Dampen
+    if type == 6 or type == 7 then
+        if ArcanumConfig.LastMagic == 6 then
+            CastSpell(ARCANUM_SPELL_TABLE.ID[7], "spell");
+            ArcanumConfig.LastMagic = 7;
+        else
+            CastSpell(ARCANUM_SPELL_TABLE.ID[6], "spell");
+            ArcanumConfig.LastMagic = 6;
+        end
+    else
+        CastSpell(ARCANUM_SPELL_TABLE.ID[type], "spell");
+        ArcanumConfig.LastMagic = type;
+    end
+
+    if TargetEnemy then
+        TargetLastTarget();
+    end
+    AlphaMagicMenu = 1;
+    AlphaMagicVar = GetTime() + 3;
 end
+
 
 -- Gestion des casts du menu des portails
 function Arcanum_PortalCast(type)
