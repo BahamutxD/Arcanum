@@ -779,13 +779,13 @@
                 Arcanum_ButtonMouseOver(6);
             </OnEnter>
             <OnClick>
-                if ArcanumConfig.InterfaceVersion == 1 then
-                Arcanum_MagicMenu(arg1);
+                if arg1 == "RightButton" then
+                Arcanum_PortalCast(7);
                 else
                 if ArcanumConfig.BuffType == 0 then
-                Arcanum_MagicCast(6);
+                Arcanum_PortalCast(6);
                 else
-                Arcanum_MagicCast(7);
+                Arcanum_PortalCast(7);
                 end
                 end
             </OnClick>
